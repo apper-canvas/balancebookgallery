@@ -108,10 +108,11 @@ export const router = createBrowserRouter([
             path: "transactions",
             element: <Transactions />
           }),
-          createRoute({
+createRoute({
             path: "budgets",
             element: <Budgets />
-createRoute({
+          }),
+          createRoute({
             path: "goals",
             element: <Goals />
           }),

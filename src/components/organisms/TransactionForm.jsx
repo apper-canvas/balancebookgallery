@@ -31,14 +31,14 @@ const [formData, setFormData] = useState({
   }, []);
 
 useEffect(() => {
-    if (transaction) {
+if (transaction) {
       setFormData({
-name: transaction.description_c || transaction.description || transaction.Name || "",
+        name: transaction.Name || transaction.name || "",
         amount: transaction.amount_c ? transaction.amount_c.toString() : transaction.amount?.toString() || "",
         category: transaction.category_c?.Name || transaction.category || "",
         type: transaction.type_c || transaction.type || "expense",
         date: transaction.date_c ? formatShortDate(new Date(transaction.date_c)) : (transaction.date ? formatShortDate(new Date(transaction.date)) : formatShortDate(new Date())),
-        description: transaction.description_c || transaction.description || transaction.Name || "",
+        description: transaction.description_c || transaction.description || "",
         notes: transaction.notes_c || transaction.notes || ""
       });
     } else {
@@ -73,6 +73,10 @@ name: transaction.description_c || transaction.description || transaction.Name |
     
     if (!formData.category) {
       newErrors.category = "Category is required";
+    }
+    
+if (!formData.name.trim()) {
+      newErrors.name = "Transaction name is required";
     }
     
     if (!formData.description.trim()) {

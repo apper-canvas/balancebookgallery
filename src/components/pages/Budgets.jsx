@@ -25,8 +25,10 @@ const Budgets = () => {
   const [error, setError] = useState("");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [newBudgetForm, setNewBudgetForm] = useState({
-    category: "",
-    monthlyLimit: ""
+category: "",
+    monthlyLimit: "",
+    description: "",
+    status: "Planned"
   });
 
   useEffect(() => {
@@ -67,9 +69,9 @@ const Budgets = () => {
     }
   };
 
-  const handleAddBudget = async () => {
+const handleAddBudget = async () => {
     if (!newBudgetForm.category || !newBudgetForm.monthlyLimit) {
-      toast.error("Please fill in all fields");
+      toast.error("Please fill in required fields");
       return;
     }
 
@@ -194,8 +196,8 @@ const Budgets = () => {
       <Modal
         isOpen={isAddModalOpen}
         onClose={() => {
-          setIsAddModalOpen(false);
-          setNewBudgetForm({ category: "", monthlyLimit: "" });
+setIsAddModalOpen(false);
+          setNewBudgetForm({ category: "", monthlyLimit: "", description: "", status: "Planned" });
         }}
         title="Add New Budget"
         footer={
@@ -204,7 +206,7 @@ const Budgets = () => {
               variant="outline"
               onClick={() => {
                 setIsAddModalOpen(false);
-                setNewBudgetForm({ category: "", monthlyLimit: "" });
+setNewBudgetForm({ category: "", monthlyLimit: "", description: "", status: "Planned" });
               }}
             >
               Cancel
@@ -234,7 +236,7 @@ const Budgets = () => {
             ))}
           </FormField>
 
-          <FormField
+<FormField
             label="Monthly Budget Limit"
             type="input"
             inputType="number"
@@ -244,6 +246,27 @@ const Budgets = () => {
             value={newBudgetForm.monthlyLimit}
             onChange={(e) => setNewBudgetForm(prev => ({ ...prev, monthlyLimit: e.target.value }))}
             required
+          />
+
+          <FormField
+            label="Description"
+            type="textarea"
+            placeholder="Enter budget description (optional)"
+            value={newBudgetForm.description}
+            onChange={(e) => setNewBudgetForm(prev => ({ ...prev, description: e.target.value }))}
+          />
+
+          <FormField
+            label="Status"
+            type="select"
+            value={newBudgetForm.status}
+            onChange={(e) => setNewBudgetForm(prev => ({ ...prev, status: e.target.value }))}
+            options={[
+              { value: "Planned", label: "Planned" },
+              { value: "Pending", label: "Pending" },
+              { value: "Completed", label: "Completed" },
+              { value: "Overdue", label: "Overdue" }
+            ]}
           />
 
           {availableCategories.length === 0 && (

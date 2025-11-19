@@ -5,12 +5,14 @@ export const budgetService = {
     try {
       const apperClient = getApperClient();
       const response = await apperClient.fetchRecords('Budget_c', {
-        fields: [
+fields: [
           {"field": {"Name": "Name"}},
           {"field": {"Name": "month_c"}},
           {"field": {"Name": "monthlyLimit_c"}},
           {"field": {"Name": "spent_c"}},
           {"field": {"Name": "rollover_c"}},
+          {"field": {"Name": "description_c"}},
+          {"field": {"Name": "status_c"}},
           {"field": {"name": "category_c"}, "referenceField": {"field": {"Name": "Name"}}}
         ]
       });
@@ -23,11 +25,13 @@ export const budgetService = {
       // Map database fields to expected format
       return response.data.map(item => ({
         Id: item.Id,
-        name: item.Name,
+name: item.Name,
         month: item.month_c,
         monthlyLimit: item.monthlyLimit_c,
         spent: item.spent_c || 0,
         rollover: item.rollover_c || 0,
+        description: item.description_c || '',
+        status: item.status_c || 'Planned',
         category: item.category_c?.Name || ''
       }));
     } catch (error) {
@@ -42,10 +46,12 @@ export const budgetService = {
       const response = await apperClient.getRecordById('Budget_c', parseInt(id), {
         fields: [
           {"field": {"Name": "Name"}},
-          {"field": {"Name": "month_c"}},
+{"field": {"Name": "month_c"}},
           {"field": {"Name": "monthlyLimit_c"}},
           {"field": {"Name": "spent_c"}},
           {"field": {"Name": "rollover_c"}},
+          {"field": {"Name": "description_c"}},
+          {"field": {"Name": "status_c"}},
           {"field": {"name": "category_c"}, "referenceField": {"field": {"Name": "Name"}}}
         ]
       });
@@ -58,11 +64,13 @@ export const budgetService = {
       const item = response.data;
       return {
         Id: item.Id,
-        name: item.Name,
+name: item.Name,
         month: item.month_c,
         monthlyLimit: item.monthlyLimit_c,
         spent: item.spent_c || 0,
         rollover: item.rollover_c || 0,
+        description: item.description_c || '',
+        status: item.status_c || 'Planned',
         category: item.category_c?.Name || ''
       };
     } catch (error) {
@@ -76,11 +84,13 @@ export const budgetService = {
       const apperClient = getApperClient();
       const response = await apperClient.fetchRecords('Budget_c', {
         fields: [
-          {"field": {"Name": "Name"}},
+{"field": {"Name": "Name"}},
           {"field": {"Name": "month_c"}},
           {"field": {"Name": "monthlyLimit_c"}},
           {"field": {"Name": "spent_c"}},
           {"field": {"Name": "rollover_c"}},
+          {"field": {"Name": "description_c"}},
+          {"field": {"Name": "status_c"}},
           {"field": {"name": "category_c"}, "referenceField": {"field": {"Name": "Name"}}}
         ],
         where: [{
@@ -97,11 +107,13 @@ export const budgetService = {
       
       return response.data.map(item => ({
         Id: item.Id,
-        name: item.Name,
+name: item.Name,
         month: item.month_c,
         monthlyLimit: item.monthlyLimit_c,
         spent: item.spent_c || 0,
         rollover: item.rollover_c || 0,
+        description: item.description_c || '',
+        status: item.status_c || 'Planned',
         category: item.category_c?.Name || ''
       }));
     } catch (error) {
@@ -132,11 +144,13 @@ export const budgetService = {
       
       const response = await apperClient.createRecord('Budget_c', {
         records: [{
-          Name: budgetData.name || `${budgetData.category} Budget`,
+Name: budgetData.name || `${budgetData.category} Budget`,
           month_c: budgetData.month,
           monthlyLimit_c: budgetData.monthlyLimit,
           spent_c: 0,
           rollover_c: 0,
+          description_c: budgetData.description || '',
+          status_c: budgetData.status || 'Planned',
           category_c: categoryId
         }]
       });
@@ -151,10 +165,12 @@ export const budgetService = {
         return {
           Id: item.Id,
           name: item.Name,
-          month: item.month_c,
+month: item.month_c,
           monthlyLimit: item.monthlyLimit_c,
           spent: item.spent_c || 0,
           rollover: item.rollover_c || 0,
+          description: item.description_c || '',
+          status: item.status_c || 'Planned',
           category: budgetData.category
         };
       }
@@ -188,11 +204,13 @@ export const budgetService = {
       
       const updateData = {
         Id: parseInt(id),
-        Name: budgetData.name,
+Name: budgetData.name,
         month_c: budgetData.month,
         monthlyLimit_c: budgetData.monthlyLimit,
         spent_c: budgetData.spent,
-        rollover_c: budgetData.rollover
+        rollover_c: budgetData.rollover,
+        description_c: budgetData.description,
+        status_c: budgetData.status
       };
       
       if (categoryId) {
@@ -212,11 +230,13 @@ export const budgetService = {
         const item = response.results[0].data;
         return {
           Id: item.Id,
-          name: item.Name,
+name: item.Name,
           month: item.month_c,
           monthlyLimit: item.monthlyLimit_c,
           spent: item.spent_c || 0,
           rollover: item.rollover_c || 0,
+          description: item.description_c || '',
+          status: item.status_c || 'Planned',
           category: budgetData.category
         };
       }

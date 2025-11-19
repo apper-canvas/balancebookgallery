@@ -1,18 +1,21 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
-import ApperIcon from "@/components/ApperIcon";
-import Button from "@/components/atoms/Button";
-import Input from "@/components/atoms/Input";
-import Card from "@/components/atoms/Card";
-import ProgressBar from "@/components/molecules/ProgressBar";
 import { budgetService } from "@/services/api/budgetService";
-import { formatCurrency } from "@/utils/formatCurrency";
 import { cn } from "@/utils/cn";
+import { formatCurrency } from "@/utils/formatCurrency";
+import ApperIcon from "@/components/ApperIcon";
+import ProgressBar from "@/components/molecules/ProgressBar";
+import Button from "@/components/atoms/Button";
+import Card from "@/components/atoms/Card";
+import Badge from "@/components/atoms/Badge";
+import Input from "@/components/atoms/Input";
+import Select from "@/components/atoms/Select";
 
 const BudgetCard = ({ budget, categoryInfo, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editAmount, setEditAmount] = useState(budget.monthlyLimit.toString());
+  const [editStatus, setEditStatus] = useState(budget.status || 'Planned');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const percentage = budget.monthlyLimit > 0 ? (budget.spent / budget.monthlyLimit) * 100 : 0;
@@ -33,9 +36,10 @@ const BudgetCard = ({ budget, categoryInfo, onUpdate }) => {
 
     setIsSubmitting(true);
     try {
-      await budgetService.update(budget.Id, { 
+await budgetService.update(budget.Id, { 
         ...budget,
-        monthlyLimit: newAmount 
+        monthlyLimit: newAmount,
+        status: editStatus
       });
       toast.success("Budget updated successfully!");
       setIsEditing(false);
@@ -47,8 +51,9 @@ const BudgetCard = ({ budget, categoryInfo, onUpdate }) => {
     }
   };
 
-  const handleCancel = () => {
+const handleCancel = () => {
     setEditAmount(budget.monthlyLimit.toString());
+    setEditStatus(budget.status || 'Planned');
     setIsEditing(false);
   };
 
@@ -74,8 +79,28 @@ const BudgetCard = ({ budget, categoryInfo, onUpdate }) => {
             </div>
             <div>
               <h3 className="font-semibold text-gray-900">{budget.category}</h3>
-              <p className="text-sm text-gray-600">Monthly Budget</p>
+<p className="text-sm text-gray-600">Monthly Budget</p>
             </div>
+            
+            {/* Status Badge */}
+            <div className="mb-3">
+              <Badge 
+                variant={
+                  budget.status === 'Completed' ? 'success' :
+                  budget.status === 'Overdue' ? 'error' :
+                  budget.status === 'Pending' ? 'warning' : 'default'
+                }
+              >
+                {budget.status || 'Planned'}
+              </Badge>
+            </div>
+            
+            {/* Description */}
+            {budget.description && (
+              <div className="mb-4">
+                <p className="text-sm text-gray-700 line-clamp-2">{budget.description}</p>
+              </div>
+            )}
           </div>
 
           <Button
@@ -89,31 +114,48 @@ const BudgetCard = ({ budget, categoryInfo, onUpdate }) => {
         </div>
 
         {/* Budget Amount */}
-        <div className="space-y-2">
+<div className="space-y-3">
           {isEditing ? (
-            <div className="flex items-center space-x-2">
-              <Input
-                type="number"
-                step="0.01"
-                min="0"
-                value={editAmount}
-                onChange={(e) => setEditAmount(e.target.value)}
-                className="flex-1"
-              />
-              <Button
-                size="sm"
-                onClick={handleSave}
-                disabled={isSubmitting}
+            <div className="space-y-3">
+              <div className="flex items-center space-x-2">
+                <Input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={editAmount}
+                  onChange={(e) => setEditAmount(e.target.value)}
+                  className="flex-1"
+                  placeholder="Monthly limit"
+                />
+              </div>
+              <Select
+                value={editStatus}
+                onChange={(e) => setEditStatus(e.target.value)}
+                className="w-full"
               >
-                Save
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleCancel}
-              >
-                Cancel
-              </Button>
+                <option value="Planned">Planned</option>
+                <option value="Pending">Pending</option>
+                <option value="Completed">Completed</option>
+                <option value="Overdue">Overdue</option>
+              </Select>
+              <div className="flex items-center space-x-2">
+                <Button
+                  size="sm"
+                  onClick={handleSave}
+                  disabled={isSubmitting}
+                  className="flex-1"
+                >
+                  Save
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleCancel}
+                  className="flex-1"
+                >
+                  Cancel
+                </Button>
+              </div>
             </div>
           ) : (
             <div className="text-2xl font-bold text-gray-900">
@@ -148,7 +190,7 @@ const BudgetCard = ({ budget, categoryInfo, onUpdate }) => {
         </div>
 
         {/* Status Indicator */}
-        <div className={cn(
+<div className={cn(
           "flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium",
           percentage < 50 && "bg-success/10 text-success",
           percentage >= 50 && percentage < 80 && "bg-warning/10 text-warning",

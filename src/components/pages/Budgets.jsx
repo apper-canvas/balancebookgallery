@@ -228,7 +228,7 @@ const Budgets = () => {
           >
             <option value="">Select a category</option>
             {availableCategories.map((category) => (
-              <option key={category.Id} value={category.name}>
+<option key={category.Id} value={category.name}>
                 {category.name}
               </option>
             ))}

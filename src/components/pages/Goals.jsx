@@ -160,7 +160,7 @@ const Goals = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {goals.map((goal) => (
               <SavingsGoalCard
-                key={goal.Id}
+key={goal.Id}
                 goal={goal}
                 onUpdate={loadData}
               />

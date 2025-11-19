@@ -5,12 +5,14 @@ export const savingsGoalService = {
     try {
       const apperClient = getApperClient();
       const response = await apperClient.fetchRecords('SavingsGoal_c', {
-        fields: [
+fields: [
           {"field": {"Name": "Name"}},
           {"field": {"Name": "targetAmount_c"}},
           {"field": {"Name": "currentAmount_c"}},
           {"field": {"Name": "deadline_c"}},
           {"field": {"Name": "priority_c"}},
+          {"field": {"Name": "Tags"}},
+          {"field": {"Name": "note_c"}},
           {"field": {"Name": "CreatedOn"}}
         ],
         orderBy: [{
@@ -31,7 +33,9 @@ export const savingsGoalService = {
         targetAmount: item.targetAmount_c,
         currentAmount: item.currentAmount_c || 0,
         deadline: item.deadline_c,
-        priority: item.priority_c,
+priority: item.priority_c,
+        tags: item.Tags || "",
+        note: item.note_c || "",
         createdAt: item.CreatedOn
       }));
     } catch (error) {
@@ -45,11 +49,13 @@ export const savingsGoalService = {
       const apperClient = getApperClient();
       const response = await apperClient.getRecordById('SavingsGoal_c', parseInt(id), {
         fields: [
-          {"field": {"Name": "Name"}},
+{"field": {"Name": "Name"}},
           {"field": {"Name": "targetAmount_c"}},
           {"field": {"Name": "currentAmount_c"}},
           {"field": {"Name": "deadline_c"}},
           {"field": {"Name": "priority_c"}},
+          {"field": {"Name": "Tags"}},
+          {"field": {"Name": "note_c"}},
           {"field": {"Name": "CreatedOn"}}
         ]
       });
@@ -66,7 +72,9 @@ export const savingsGoalService = {
         targetAmount: item.targetAmount_c,
         currentAmount: item.currentAmount_c || 0,
         deadline: item.deadline_c,
-        priority: item.priority_c,
+priority: item.priority_c,
+        tags: item.Tags || "",
+        note: item.note_c || "",
         createdAt: item.CreatedOn
       };
     } catch (error) {
@@ -84,7 +92,9 @@ export const savingsGoalService = {
           targetAmount_c: goalData.targetAmount,
           currentAmount_c: 0,
           deadline_c: goalData.deadline,
-          priority_c: goalData.priority
+priority_c: goalData.priority,
+          Tags: goalData.tags || "",
+          note_c: goalData.note || ""
         }]
       });
       
@@ -101,7 +111,9 @@ export const savingsGoalService = {
           targetAmount: item.targetAmount_c,
           currentAmount: item.currentAmount_c || 0,
           deadline: item.deadline_c,
-          priority: item.priority_c,
+priority: item.priority_c,
+          tags: item.Tags || "",
+          note: item.note_c || "",
           createdAt: item.CreatedOn
         };
       }
@@ -123,7 +135,9 @@ export const savingsGoalService = {
           targetAmount_c: goalData.targetAmount,
           currentAmount_c: goalData.currentAmount,
           deadline_c: goalData.deadline,
-          priority_c: goalData.priority
+priority_c: goalData.priority,
+          Tags: goalData.tags || "",
+          note_c: goalData.note || ""
         }]
       });
       
@@ -140,7 +154,9 @@ export const savingsGoalService = {
           targetAmount: item.targetAmount_c,
           currentAmount: item.currentAmount_c || 0,
           deadline: item.deadline_c,
-          priority: item.priority_c,
+priority: item.priority_c,
+          tags: item.Tags || "",
+          note: item.note_c || "",
           createdAt: item.CreatedOn
         };
       }

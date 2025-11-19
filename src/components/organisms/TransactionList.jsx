@@ -169,15 +169,20 @@ title="No transactions found"
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
                     className="hover:bg-gray-50 transition-colors duration-150"
-                  >
+>
                     <td className="px-6 py-4">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">
-                          {transaction.description}
+                        {(transaction.Name || transaction.name) && (
+                          <div className="text-sm font-semibold text-gray-900 mb-1">
+                            {transaction.Name || transaction.name}
+                          </div>
+                        )}
+                        <div className="text-sm font-medium text-gray-700">
+                          {transaction.description_c || transaction.description}
                         </div>
-                        {transaction.notes && (
+                        {(transaction.notes_c || transaction.notes) && (
                           <div className="text-sm text-gray-500 truncate max-w-[200px]">
-                            {transaction.notes}
+                            {transaction.notes_c || transaction.notes}
                           </div>
                         )}
                       </div>

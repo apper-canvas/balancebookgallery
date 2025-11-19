@@ -18,11 +18,13 @@ const Goals = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [newGoalForm, setNewGoalForm] = useState({
+const [newGoalForm, setNewGoalForm] = useState({
     name: "",
     targetAmount: "",
     deadline: "",
-    priority: "medium"
+    priority: "medium",
+    note: "",
+    tags: ""
   });
 
   useEffect(() => {
@@ -66,20 +68,24 @@ const Goals = () => {
     }
 
     try {
-      await savingsGoalService.create({
+await savingsGoalService.create({
         name: newGoalForm.name,
         targetAmount: amount,
         deadline: deadline.toISOString(),
-        priority: newGoalForm.priority
+        priority: newGoalForm.priority,
+        tags: newGoalForm.tags,
+        note: newGoalForm.note
       });
       
       toast.success("Savings goal created successfully!");
       setIsAddModalOpen(false);
-      setNewGoalForm({
+setNewGoalForm({
         name: "",
         targetAmount: "",
         deadline: "",
-        priority: "medium"
+        priority: "medium",
+        note: "",
+        tags: ""
       });
       loadData();
     } catch (error) {
@@ -174,11 +180,13 @@ key={goal.Id}
         isOpen={isAddModalOpen}
         onClose={() => {
           setIsAddModalOpen(false);
-          setNewGoalForm({
+setNewGoalForm({
             name: "",
             targetAmount: "",
             deadline: "",
-            priority: "medium"
+            priority: "medium",
+            note: "",
+            tags: ""
           });
         }}
         title="Add New Savings Goal"
@@ -189,11 +197,13 @@ key={goal.Id}
               variant="outline"
               onClick={() => {
                 setIsAddModalOpen(false);
-                setNewGoalForm({
+setNewGoalForm({
                   name: "",
                   targetAmount: "",
                   deadline: "",
-                  priority: "medium"
+                  priority: "medium",
+                  note: "",
+                  tags: ""
                 });
               }}
             >
@@ -251,7 +261,24 @@ key={goal.Id}
             min={getMinDate()}
             value={newGoalForm.deadline}
             onChange={(e) => setNewGoalForm(prev => ({ ...prev, deadline: e.target.value }))}
-            required
+required
+          />
+
+          <FormField
+            label="Tags"
+            type="input"
+            placeholder="e.g., vacation, emergency, car (comma-separated)"
+            value={newGoalForm.tags}
+            onChange={(e) => setNewGoalForm(prev => ({ ...prev, tags: e.target.value }))}
+          />
+
+          <FormField
+            label="Note"
+            type="textarea"
+            placeholder="Additional details about your goal..."
+            value={newGoalForm.note}
+            onChange={(e) => setNewGoalForm(prev => ({ ...prev, note: e.target.value }))}
+            rows={3}
           />
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">

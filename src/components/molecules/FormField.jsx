@@ -16,8 +16,20 @@ const FormField = ({
     <div className={cn("space-y-2", className)}>
       {label && <Label required={required}>{label}</Label>}
       
-      {type === "input" && <Input error={error} {...props} />}
-      {type === "select" && <Select error={error} {...props}>{children}</Select>}
+{type === "input" && <Input error={error} {...props} />}
+      {type === "select" && (
+        <Select error={error} {...props}>
+          {props.options ? (
+            props.options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))
+          ) : (
+            children
+          )}
+        </Select>
+      )}
       {type === "textarea" && (
         <textarea
           className={cn(

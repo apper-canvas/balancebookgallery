@@ -33,12 +33,12 @@ const [formData, setFormData] = useState({
 useEffect(() => {
     if (transaction) {
       setFormData({
-        name: transaction.Name || "",
+name: transaction.description_c || transaction.description || transaction.Name || "",
         amount: transaction.amount_c ? transaction.amount_c.toString() : transaction.amount?.toString() || "",
         category: transaction.category_c?.Name || transaction.category || "",
         type: transaction.type_c || transaction.type || "expense",
         date: transaction.date_c ? formatShortDate(new Date(transaction.date_c)) : (transaction.date ? formatShortDate(new Date(transaction.date)) : formatShortDate(new Date())),
-        description: transaction.description_c || transaction.description || "",
+        description: transaction.description_c || transaction.description || transaction.Name || "",
         notes: transaction.notes_c || transaction.notes || ""
       });
     } else {

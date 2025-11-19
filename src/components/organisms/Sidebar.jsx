@@ -1,9 +1,10 @@
 import { NavLink } from "react-router-dom";
-import { useAuth } from "@/layouts/Root";
 import React from "react";
 import { cn } from "@/utils/cn";
 import ApperIcon from "@/components/ApperIcon";
+import Transactions from "@/components/pages/Transactions";
 import Button from "@/components/atoms/Button";
+import { useAuth } from "@/layouts/Root";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: "Home" },
@@ -41,43 +42,47 @@ const Sidebar = ({ className }) => {
               <h1 className="text-xl font-bold text-gray-900">BalanceBook</h1>
               <p className="text-xs text-gray-500">Personal Finance</p>
             </div>
-          </div>
+</div>
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 px-4 space-y-2">
-          {navigation.map((item) => (
-            <NavLink
-              key={item.name}
-              to={item.href}
-              className={({ isActive }) =>
-                cn(
-                  "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 group",
-                  isActive
-                    ? "bg-gradient-to-r from-primary/10 to-secondary/10 text-primary border-l-4 border-primary ml-0 pl-3"
-                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                )
-              }
-            >
-              {({ isActive }) => (
-                <>
-                  <ApperIcon 
-                    name={item.icon} 
-                    className={cn(
-                      "w-5 h-5 mr-3 transition-colors duration-200",
-                      isActive ? "text-primary" : "text-gray-400 group-hover:text-gray-600"
-                    )} 
-                  />
-                  {item.name}
-                </>
-              )}
-            </NavLink>
-          ))}
+        <nav className="flex-1 px-6 py-4">
+          <div className="space-y-2">
+            {navigation.map((item) => (
+              <NavLink
+                key={item.name}
+                to={item.href}
+                className={({ isActive }) =>
+                  cn(
+                    "flex items-center px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 group",
+                    isActive
+                      ? "bg-primary text-white"
+                      : "text-gray-600 hover:bg-gray-50"
+                  )
+                }
+              >
+                {({ isActive }) => (
+                  <>
+                    <ApperIcon 
+                      name={item.icon} 
+                      className={cn(
+                        "w-5 h-5 mr-3 transition-colors duration-200",
+                        isActive ? "text-white" : "text-gray-400 group-hover:text-gray-600"
+                      )} 
+                    />
+                    {item.name}
+                  </>
+                )}
+              </NavLink>
+            ))}
+          </div>
         </nav>
 
         {/* Footer */}
-<div className="p-4 border-t border-gray-200">
-          <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-4 mb-4">
+        <div className="p-4 border-t border-gray-200">
+
+        {/* Footer */}
+<div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-lg p-4 mb-4">
             <div className="flex items-center space-x-3">
               <ApperIcon name="TrendingUp" className="w-5 h-5 text-primary" />
               <div>

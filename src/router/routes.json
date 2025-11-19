@@ -15,16 +15,30 @@
   "/transactions": {
     "allow": {
       "when": {
+"/transactions": {
+    "allow": {
+      "when": {
         "conditions": [
           {
-            "label": "Transactions access for authenticated users", 
+            "label": "User must be logged in to view transactions",
             "rule": "authenticated"
           }
         ]
       },
-      "redirectOnDeny": "/login"
+      "redirectOnDeny": "/login",
+      "excludeRedirectQuery": false
     }
   },
+  "/accounts": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "User must be logged in to view accounts",
+            "rule": "authenticated"
+          }
+        ]
+      },
   "/budgets": {
     "allow": {
       "when": {
@@ -136,4 +150,4 @@
       }
     }
   }
-}
+}}}}}}

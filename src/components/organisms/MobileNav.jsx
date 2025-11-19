@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
-import { useAuth } from "@/layouts/Root";
 import { cn } from "@/utils/cn";
 import ApperIcon from "@/components/ApperIcon";
+import Transactions from "@/components/pages/Transactions";
 import Button from "@/components/atoms/Button";
+import { useAuth } from "@/layouts/Root";
 
 const navigation = [
   { name: "Dashboard", href: "/", icon: "Home" },
@@ -28,28 +29,21 @@ const MobileNav = () => {
             <h1 className="text-lg font-bold text-gray-900">BalanceBook</h1>
           </div>
           
-          <Button
+<Button
             variant="ghost"
             size="sm"
             onClick={() => setIsOpen(!isOpen)}
             className="p-2"
           >
-            <ApperIcon name={isOpen ? "X" : "Menu"} className="w-6 h-6" />
+            <ApperIcon 
+              name={isOpen ? "X" : "Menu"} 
+              className="w-5 h-5 text-gray-600" 
+            />
           </Button>
         </div>
       </div>
 
-      {/* Mobile Overlay */}
       <AnimatePresence>
-        {isOpen && (
-          <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 lg:hidden"
-              onClick={() => setIsOpen(false)}
-            />
             
             <motion.div
               initial={{ x: "-100%" }}

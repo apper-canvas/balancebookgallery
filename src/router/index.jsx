@@ -7,7 +7,6 @@ import Layout from "@/components/organisms/Layout";
 // Lazy load all page components
 const Dashboard = lazy(() => import('@/components/pages/Dashboard'));
 const Transactions = lazy(() => import('@/components/pages/Transactions'));
-const Accounts = lazy(() => import('@/components/pages/Accounts'));
 const Budgets = lazy(() => import('@/components/pages/Budgets'));
 const Goals = lazy(() => import('@/components/pages/Goals'));
 const Charts = lazy(() => import('@/components/pages/Charts'));
@@ -105,13 +104,9 @@ export const router = createBrowserRouter([
             index: true,
             element: <Dashboard />
           }),
-createRoute({
+          createRoute({
             path: "transactions",
             element: <Transactions />
-          }),
-          createRoute({
-            path: "accounts",
-            element: <Accounts />
           }),
           createRoute({
             path: "budgets",

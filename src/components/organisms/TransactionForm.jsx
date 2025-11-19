@@ -13,7 +13,8 @@ const TransactionForm = ({
   transaction = null, 
   onSuccess 
 }) => {
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
+    name: "",
     amount: "",
     category: "",
     type: "expense",
@@ -31,7 +32,8 @@ const TransactionForm = ({
 
   useEffect(() => {
     if (transaction) {
-      setFormData({
+setFormData({
+        name: transaction.Name || "",
         amount: transaction.amount.toString(),
         category: transaction.category,
         type: transaction.type,
@@ -40,7 +42,8 @@ const TransactionForm = ({
         notes: transaction.notes || ""
       });
     } else {
-      setFormData({
+setFormData({
+        name: "",
         amount: "",
         category: "",
         type: "expense",
@@ -166,8 +169,16 @@ const TransactionForm = ({
             error={errors.amount}
             required
           />
-        </div>
+</div>
 
+        <FormField
+          label="Transaction Name"
+          type="input"
+          placeholder="e.g., Morning Coffee, Gas Station"
+          value={formData.name}
+          onChange={(e) => handleChange("name", e.target.value)}
+          error={errors.name}
+        />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <FormField
             label="Category"

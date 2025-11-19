@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ApperIcon } from '@/components/ApperIcon';
+import ApperIcon from '@/components/ApperIcon';
 
 const NotFound = () => {
   return (

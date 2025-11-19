@@ -51,6 +51,11 @@
       "redirectOnDeny": "/login"
     }
   },
+"/accounts": {
+    "protected": true,
+    "component": "Accounts",
+    "title": "Accounts"
+  },
   "/charts": {
     "allow": {
       "when": {

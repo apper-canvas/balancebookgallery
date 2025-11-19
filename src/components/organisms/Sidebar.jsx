@@ -10,6 +10,7 @@ const navigation = [
   { name: "Transactions", href: "/transactions", icon: "Receipt" },
   { name: "Budgets", href: "/budgets", icon: "CreditCard" },
   { name: "Goals", href: "/goals", icon: "Target" },
+{ name: "Accounts", href: "/accounts", icon: "Wallet" },
   { name: "Charts", href: "/charts", icon: "BarChart3" }
 ];
 

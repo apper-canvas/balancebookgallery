@@ -1,14 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
 import React, { Suspense, lazy } from "react";
-import { getRouteConfig } from "./route.utils";
-import Root from "@/layouts/Root";
+import { getRouteConfig } from "@/router/route.utils";
 import Layout from "@/components/organisms/Layout";
-
+import Root from "@/layouts/Root";
 // Lazy load all page components
 const Dashboard = lazy(() => import('@/components/pages/Dashboard'));
 const Transactions = lazy(() => import('@/components/pages/Transactions'));
 const Budgets = lazy(() => import('@/components/pages/Budgets'));
 const Goals = lazy(() => import('@/components/pages/Goals'));
+const Accounts = lazy(() => import('@/components/pages/Accounts'));
 const Charts = lazy(() => import('@/components/pages/Charts'));
 const NotFound = lazy(() => import('@/components/pages/NotFound'));
 const Login = lazy(() => import('@/components/pages/Login'));
@@ -111,10 +111,13 @@ export const router = createBrowserRouter([
           createRoute({
             path: "budgets",
             element: <Budgets />
-          }),
-          createRoute({
+createRoute({
             path: "goals",
             element: <Goals />
+          }),
+          createRoute({
+            path: "accounts",
+            element: <Accounts />
           }),
           createRoute({
             path: "charts",

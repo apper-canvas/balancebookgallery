@@ -10,7 +10,8 @@ const navigation = [
   { name: "Dashboard", href: "/", icon: "Home" },
   { name: "Transactions", href: "/transactions", icon: "Receipt" },
   { name: "Budgets", href: "/budgets", icon: "CreditCard" },
-  { name: "Goals", href: "/goals", icon: "Target" },
+{ name: "Goals", href: "/goals", icon: "Target" },
+  { name: "Accounts", href: "/accounts", icon: "Wallet" },
   { name: "Charts", href: "/charts", icon: "BarChart3" }
 ];
 const MobileNav = () => {

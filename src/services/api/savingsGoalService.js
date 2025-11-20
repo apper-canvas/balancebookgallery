@@ -141,9 +141,9 @@ priority_c: goalData.priority,
         }]
       });
       
-      if (!response.success) {
-        console.error(response.message);
-        throw new Error(response.message);
+if (!response.success) {
+        console.error(`apper_info: Got an error in savingsGoalService.getById. The response body is: ${JSON.stringify(response)}.`);
+        return null;
       }
       
       if (response.results && response.results[0]?.success) {
@@ -154,14 +154,19 @@ priority_c: goalData.priority,
           targetAmount: item.targetAmount_c,
           currentAmount: item.currentAmount_c || 0,
           deadline: item.deadline_c,
-priority: item.priority_c,
+          priority: item.priority_c,
           tags: item.Tags || "",
           note: item.note_c || "",
           createdAt: item.CreatedOn
         };
       }
       
-      throw new Error("Savings goal not found");
+      // Handle case where record is not found or update failed
+      if (response.results && response.results[0] && !response.results[0].success) {
+        console.error(`apper_info: Got an error in savingsGoalService.getById. Record operation failed: ${JSON.stringify(response.results[0])}.`);
+      }
+      
+      return null;
     } catch (error) {
       console.error(`Error updating savings goal ${id}:`, error?.response?.data?.message || error);
       throw error;
@@ -191,14 +196,19 @@ priority: item.priority_c,
         throw new Error(response.message);
       }
       
-      if (response.results && response.results[0]?.success) {
+if (response.results && response.results[0]?.success) {
         return {
           ...currentGoal,
           currentAmount: newAmount
         };
       }
       
-      throw new Error("Savings goal not found");
+      // Handle case where record is not found or update failed
+      if (response.results && response.results[0] && !response.results[0].success) {
+        console.error(`apper_info: Got an error in savingsGoalService.addContribution. Record operation failed: ${JSON.stringify(response.results[0])}.`);
+      }
+      
+      return null;
     } catch (error) {
       console.error(`Error adding contribution to goal ${id}:`, error?.response?.data?.message || error);
       throw error;
@@ -217,11 +227,16 @@ priority: item.priority_c,
         throw new Error(response.message);
       }
       
-      if (response.results && response.results[0]?.success) {
+if (response.results && response.results[0]?.success) {
         return true;
       }
       
-      throw new Error("Savings goal not found");
+      // Handle case where record is not found or delete failed
+      if (response.results && response.results[0] && !response.results[0].success) {
+        console.error(`apper_info: Got an error in savingsGoalService.delete. Record operation failed: ${JSON.stringify(response.results[0])}.`);
+      }
+      
+      return false;
     } catch (error) {
       console.error(`Error deleting savings goal ${id}:`, error?.response?.data?.message || error);
       throw error;

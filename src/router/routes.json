@@ -56,10 +56,18 @@
     "component": "Accounts",
     "title": "Accounts"
   },
-  "/bills": {
-    "protected": true,
-    "component": "Bills", 
-    "title": "Bills"
+"/bills": {
+    "allow": {
+      "when": {
+        "conditions": [
+          {
+            "label": "Bills access for authenticated users",
+            "rule": "authenticated"
+          }
+        ]
+      },
+      "redirectOnDeny": "/login"
+    }
   },
   "/charts": {
     "allow": {

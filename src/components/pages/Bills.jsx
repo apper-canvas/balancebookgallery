@@ -19,8 +19,9 @@ const Bills = () => {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBill, setEditingBill] = useState(null);
-  const [formData, setFormData] = useState({
+const [formData, setFormData] = useState({
     Name: '',
+    Tags: '',
     due_date_c: '',
     amount_c: '',
     status_c: 'unpaid'
@@ -49,7 +50,8 @@ const Bills = () => {
     if (bill) {
       setEditingBill(bill);
       setFormData({
-        Name: bill.Name || '',
+Name: bill.Name || '',
+        Tags: bill.Tags || '',
         due_date_c: bill.due_date_c || '',
         amount_c: bill.amount_c || '',
         status_c: bill.status_c || 'unpaid'
@@ -58,6 +60,7 @@ const Bills = () => {
       setEditingBill(null);
       setFormData({
         Name: '',
+Tags: '',
         due_date_c: '',
         amount_c: '',
         status_c: 'unpaid'
@@ -71,6 +74,7 @@ const Bills = () => {
     setEditingBill(null);
     setFormData({
       Name: '',
+Tags: '',
       due_date_c: '',
       amount_c: '',
       status_c: 'unpaid'
@@ -194,11 +198,16 @@ const Bills = () => {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead className="bg-gray-50 border-b">
-                    <tr>
+<tr>
                       <th className="text-left py-3 px-4 font-medium text-gray-700">Name</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Tags</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-700">Due Date</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-700">Amount</th>
                       <th className="text-left py-3 px-4 font-medium text-gray-700">Status</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Created On</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Created By</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Modified On</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-700">Modified By</th>
                       <th className="text-right py-3 px-4 font-medium text-gray-700">Actions</th>
                     </tr>
                   </thead>
@@ -207,8 +216,13 @@ const Bills = () => {
                       const effectiveStatus = getEffectiveStatus(bill);
                       return (
                         <tr key={bill.Id} className="hover:bg-gray-50">
-                          <td className="py-3 px-4">
+<td className="py-3 px-4">
                             <div className="font-medium text-gray-900">{bill.Name}</div>
+                          </td>
+                          <td className="py-3 px-4">
+                            <div className="text-sm text-gray-600">
+                              {bill.Tags ? bill.Tags.split(',').map(tag => tag.trim()).join(', ') : 'No tags'}
+                            </div>
                           </td>
                           <td className="py-3 px-4 text-gray-600">
                             {formatDate(bill.due_date_c)}
@@ -220,6 +234,18 @@ const Bills = () => {
                             <Badge className={`${getStatusColor(effectiveStatus)} capitalize`}>
                               {effectiveStatus}
                             </Badge>
+                          </td>
+                          <td className="py-3 px-4 text-sm text-gray-600">
+                            {bill.CreatedOn ? formatDate(bill.CreatedOn) : 'N/A'}
+                          </td>
+                          <td className="py-3 px-4 text-sm text-gray-600">
+                            {bill.CreatedBy?.Name || 'N/A'}
+                          </td>
+                          <td className="py-3 px-4 text-sm text-gray-600">
+                            {bill.ModifiedOn ? formatDate(bill.ModifiedOn) : 'N/A'}
+                          </td>
+                          <td className="py-3 px-4 text-sm text-gray-600">
+                            {bill.ModifiedBy?.Name || 'N/A'}
                           </td>
                           <td className="py-3 px-4">
                             <div className="flex items-center justify-end space-x-2">
@@ -255,8 +281,15 @@ const Bills = () => {
               const effectiveStatus = getEffectiveStatus(bill);
               return (
                 <Card key={bill.Id} className="p-4">
-                  <div className="flex justify-between items-start mb-3">
-                    <h3 className="font-medium text-gray-900">{bill.Name}</h3>
+<div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h3 className="font-medium text-gray-900">{bill.Name}</h3>
+                      {bill.Tags && (
+                        <div className="text-xs text-gray-500 mt-1">
+                          Tags: {bill.Tags.split(',').map(tag => tag.trim()).join(', ')}
+                        </div>
+                      )}
+                    </div>
                     <Badge className={`${getStatusColor(effectiveStatus)} capitalize`}>
                       {effectiveStatus}
                     </Badge>
@@ -307,7 +340,15 @@ const Bills = () => {
             value={formData.Name}
             onChange={(e) => handleInputChange('Name', e.target.value)}
             required
-            placeholder="Enter bill name"
+placeholder="Enter bill name"
+          />
+
+          <FormField
+            label="Tags"
+            type="text"
+            value={formData.Tags}
+            onChange={(e) => handleInputChange('Tags', e.target.value)}
+            placeholder="Enter tags (comma-separated)"
           />
 
           <FormField

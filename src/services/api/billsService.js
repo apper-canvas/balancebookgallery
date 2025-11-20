@@ -18,12 +18,17 @@ class BillsService {
     try {
       const apperClient = await this.getApperClient();
       const params = {
-        fields: [
+fields: [
           {"field": {"Name": "Id"}},
           {"field": {"Name": "Name"}},
+          {"field": {"Name": "Tags"}},
           {"field": {"Name": "due_date_c"}},
           {"field": {"Name": "amount_c"}},
-          {"field": {"Name": "status_c"}}
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "CreatedBy"}},
+          {"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "ModifiedBy"}}
         ],
         orderBy: [{"fieldName": "due_date_c", "sorttype": "ASC"}]
       };
@@ -46,11 +51,16 @@ class BillsService {
       const apperClient = await this.getApperClient();
       const params = {
         fields: [
-          {"field": {"Name": "Id"}},
+{"field": {"Name": "Id"}},
           {"field": {"Name": "Name"}},
+          {"field": {"Name": "Tags"}},
           {"field": {"Name": "due_date_c"}},
           {"field": {"Name": "amount_c"}},
-          {"field": {"Name": "status_c"}}
+          {"field": {"Name": "status_c"}},
+          {"field": {"Name": "CreatedOn"}},
+          {"field": {"Name": "CreatedBy"}},
+          {"field": {"Name": "ModifiedOn"}},
+          {"field": {"Name": "ModifiedBy"}}
         ]
       };
 
@@ -67,7 +77,8 @@ class BillsService {
       const apperClient = await this.getApperClient();
       const params = {
         records: [{
-          Name: billData.Name,
+Name: billData.Name,
+          Tags: billData.Tags || '',
           due_date_c: billData.due_date_c,
           amount_c: parseFloat(billData.amount_c),
           status_c: billData.status_c
@@ -108,7 +119,8 @@ class BillsService {
       const params = {
         records: [{
           Id: parseInt(id),
-          Name: billData.Name,
+Name: billData.Name,
+          Tags: billData.Tags || '',
           due_date_c: billData.due_date_c,
           amount_c: parseFloat(billData.amount_c),
           status_c: billData.status_c

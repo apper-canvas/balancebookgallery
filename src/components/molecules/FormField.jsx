@@ -14,9 +14,9 @@ const FormField = ({
 }) => {
   return (
     <div className={cn("space-y-2", className)}>
-      {label && <Label required={required}>{label}</Label>}
+{label && <Label required={required}>{label}</Label>}
       
-{type === "input" && <Input error={error} {...props} />}
+      {type !== "select" && type !== "textarea" && <Input error={error} {...props} />}
       {type === "select" && (
         <Select error={error} {...props}>
           {props.options ? (

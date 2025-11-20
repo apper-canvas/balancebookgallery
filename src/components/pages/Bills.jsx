@@ -12,14 +12,15 @@ import Error from '@/components/ui/Error';
 import ApperIcon from '@/components/ApperIcon';
 import { formatCurrency } from '@/utils/formatCurrency';
 import { formatDate } from '@/utils/dateUtils';
-
 const Bills = () => {
   const [bills, setBills] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingBill, setEditingBill] = useState(null);
-const [formData, setFormData] = useState({
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [selectedBill, setSelectedBill] = useState(null);
+  const [formData, setFormData] = useState({
     Name: '',
     Tags: '',
     due_date_c: '',
@@ -27,7 +28,6 @@ const [formData, setFormData] = useState({
     status_c: 'unpaid'
   });
   const [formLoading, setFormLoading] = useState(false);
-
   useEffect(() => {
     loadBills();
   }, []);
@@ -83,6 +83,16 @@ Tags: '',
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+};
+
+  const handleOpenDetailsModal = (bill) => {
+    setSelectedBill(bill);
+    setIsDetailsModalOpen(true);
+  };
+
+  const handleCloseDetailsModal = () => {
+    setIsDetailsModalOpen(false);
+    setSelectedBill(null);
   };
 
   const handleSubmit = async (e) => {
@@ -215,8 +225,12 @@ Tags: '',
                     {bills.map((bill) => {
                       const effectiveStatus = getEffectiveStatus(bill);
                       return (
-                        <tr key={bill.Id} className="hover:bg-gray-50">
-<td className="py-3 px-4">
+<tr 
+                          key={bill.Id} 
+                          className="hover:bg-gray-50 cursor-pointer transition-colors"
+                          onClick={() => handleOpenDetailsModal(bill)}
+                        >
+                          <td className="py-3 px-4">
                             <div className="font-medium text-gray-900">{bill.Name}</div>
                           </td>
                           <td className="py-3 px-4">
@@ -280,8 +294,12 @@ Tags: '',
             {bills.map((bill) => {
               const effectiveStatus = getEffectiveStatus(bill);
               return (
-                <Card key={bill.Id} className="p-4">
-<div className="flex justify-between items-start mb-3">
+<Card 
+                  key={bill.Id} 
+                  className="p-4 cursor-pointer transition-colors hover:bg-gray-50"
+                  onClick={() => handleOpenDetailsModal(bill)}
+                >
+                  <div className="flex justify-between items-start mb-3">
                     <div>
                       <h3 className="font-medium text-gray-900">{bill.Name}</h3>
                       {bill.Tags && (
@@ -399,9 +417,131 @@ placeholder="Enter bill name"
             </Button>
           </div>
         </form>
+</Modal>
+
+      {/* Details Modal */}
+      <Modal 
+        isOpen={isDetailsModalOpen} 
+        onClose={handleCloseDetailsModal} 
+        title="Bill Details"
+      >
+        {selectedBill && (
+          <div className="space-y-6">
+            {/* Basic Information */}
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Bill Name
+                  </label>
+                  <div className="text-gray-900 font-medium">{selectedBill.Name}</div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Status
+                  </label>
+                  <Badge className={`${getStatusColor(getEffectiveStatus(selectedBill))} capitalize`}>
+                    {getEffectiveStatus(selectedBill)}
+                  </Badge>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Due Date
+                  </label>
+                  <div className="text-gray-900">{formatDate(selectedBill.due_date_c)}</div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Amount
+                  </label>
+                  <div className="text-gray-900 font-medium text-lg">
+                    {formatCurrency(selectedBill.amount_c)}
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Tags
+                </label>
+                <div className="text-gray-900">
+                  {selectedBill.Tags ? (
+                    <div className="flex flex-wrap gap-1">
+                      {selectedBill.Tags.split(',').map((tag, index) => (
+                        <Badge key={index} className="bg-blue-100 text-blue-800 text-xs">
+                          {tag.trim()}
+                        </Badge>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className="text-gray-500">No tags</span>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* System Information */}
+            <div className="border-t pt-4">
+              <h3 className="text-sm font-medium text-gray-700 mb-3">System Information</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">
+                    Created On
+                  </label>
+                  <div className="text-gray-700">
+                    {selectedBill.CreatedOn ? formatDate(selectedBill.CreatedOn) : 'N/A'}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">
+                    Created By
+                  </label>
+                  <div className="text-gray-700">
+                    {selectedBill.CreatedBy?.Name || 'N/A'}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">
+                    Modified On
+                  </label>
+                  <div className="text-gray-700">
+                    {selectedBill.ModifiedOn ? formatDate(selectedBill.ModifiedOn) : 'N/A'}
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-500 mb-1">
+                    Modified By
+                  </label>
+                  <div className="text-gray-700">
+                    {selectedBill.ModifiedBy?.Name || 'N/A'}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="flex justify-end space-x-3 pt-4 border-t">
+              <Button
+                variant="outline"
+                onClick={() => {
+                  handleCloseDetailsModal();
+                  handleOpenModal(selectedBill);
+                }}
+              >
+                <ApperIcon name="Edit2" size={16} />
+                Edit Bill
+              </Button>
+              <Button variant="outline" onClick={handleCloseDetailsModal}>
+                Close
+              </Button>
+            </div>
+          </div>
+        )}
       </Modal>
     </div>
   );
 };
-
 export default Bills;

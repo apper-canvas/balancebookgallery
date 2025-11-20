@@ -9,6 +9,7 @@ const Transactions = lazy(() => import('@/components/pages/Transactions'));
 const Budgets = lazy(() => import('@/components/pages/Budgets'));
 const Goals = lazy(() => import('@/components/pages/Goals'));
 const Accounts = lazy(() => import('@/components/pages/Accounts'));
+const Bills = lazy(() => import('@/components/pages/Bills'));
 const Charts = lazy(() => import('@/components/pages/Charts'));
 const NotFound = lazy(() => import('@/components/pages/NotFound'));
 const Login = lazy(() => import('@/components/pages/Login'));
@@ -119,6 +120,10 @@ createRoute({
           createRoute({
             path: "accounts",
             element: <Accounts />
+}),
+          createRoute({
+            path: "bills",
+            element: <Bills />
           }),
           createRoute({
             path: "charts",

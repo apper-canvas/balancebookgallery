@@ -56,6 +56,11 @@
     "component": "Accounts",
     "title": "Accounts"
   },
+  "/bills": {
+    "protected": true,
+    "component": "Bills", 
+    "title": "Bills"
+  },
   "/charts": {
     "allow": {
       "when": {
